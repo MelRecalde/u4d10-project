@@ -44,4 +44,14 @@ public abstract class CatalogItem {
     public void setPageCount(int pageCount) {
         this.pageCount = pageCount;
     }
+
+    @Override
+    public String toString() {
+        return "CatalogItem {" +
+                " code= '" + code + '\'' +
+                " , title= '" + title + '\'' +
+                " , publicationYear= " + publicationYear +
+                " , pageCount= " + pageCount +
+                '}';
+    }
 }

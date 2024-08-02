@@ -17,4 +17,11 @@ public class Magazine extends CatalogItem {
     public void setPeriodicity(Periodicity periodicity) {
         this.periodicity = periodicity;
     }
+
+    @Override
+    public String toString() {
+        return "Magazine {" +
+                " periodicity= " + periodicity +
+                '}' + super.toString();
+    }
 }
