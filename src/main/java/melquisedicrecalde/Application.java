@@ -2,9 +2,12 @@ package melquisedicrecalde;
 
 import melquisedicrecalde.entities.Book;
 import melquisedicrecalde.entities.Catalog;
+import melquisedicrecalde.entities.CatalogItem;
 import melquisedicrecalde.entities.Magazine;
 import melquisedicrecalde.enums.Periodicity;
 
+import java.io.IOException;
+import java.util.List;
 import java.util.Scanner;
 
 public class Application {
@@ -33,7 +36,7 @@ public class Application {
                     removeItem();
                     break;
                 case 3:
-                    searchByUniqueCode();
+                    searchByCode();
                     break;
                 case 4:
                     searchByPublicationYear();
@@ -93,4 +96,59 @@ public class Application {
         String code = scanner.nextLine();
         catalog.removeItem(code);
     }
+
+    private static void searchByCode() {
+        System.out.println("Code: ");
+        String code = scanner.nextLine();
+        catalog.findByCode(code).ifPresentOrElse(
+                item -> System.out.println("Item found: " + item.getTitle()),
+                () -> System.out.println("Item not found.")
+        );
+    }
+
+    private static void searchByPublicationYear() {
+        System.out.println("Publication Year: ");
+        int year = Integer.parseInt(scanner.nextLine());
+        List<CatalogItem> results = catalog.findByPublicationYear(year);
+        if (results.isEmpty()) {
+            System.out.println("No items found.");
+        } else {
+            results.forEach(item -> System.out.println("Item found: " + item.getTitle()));
+        }
+    }
+
+    private static void searchByAuthor() {
+        String author = scanner.nextLine();
+        List<Book> results = catalog.findByAuthor(author);
+        if (results.isEmpty()) {
+            System.out.println("No books found.");
+        } else {
+            results.forEach(book -> System.out.println("Book found: " + book.getTitle()));
+        }
+    }
+
+    private static void saveCatalog() {
+        System.out.println("File path: ");
+        String filePath = scanner.nextLine();
+        try {
+            catalog.saveToDisk(filePath);
+            System.out.println("Catalog saved successfully.");
+        } catch (IOException error) {
+            System.out.println("Error saving catalog.");
+            error.printStackTrace();
+        }
+    }
+
+    private static void loadCatalog() {
+        System.out.println("File path: ");
+        String filePath = scanner.nextLine();
+        try {
+            catalog.loadFromDisk(filePath);
+            System.out.println("Catalog loaded successfully.");
+        } catch (IOException | ClassNotFoundException error) {
+            System.out.println("Error loading catalog.");
+            error.printStackTrace();
+        }
+    }
+
 }
